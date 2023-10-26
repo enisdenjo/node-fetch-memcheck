@@ -18,22 +18,23 @@ const fetchModule = await (() => {
 console.log(`Node ${process.version} with ${fetchModuleName}`);
 
 http
-  .createServer((req, res) => {
-    if (req.url.endsWith("gc")) {
-      global.gc();
+  .createServer(async (req, res) => {
+    try {
+      if (req.url.endsWith("gc")) {
+        for (let i = 0; i < 10; i++) {
+          global.gc();
+          await new Promise((resolve) => process.nextTick(resolve));
+        }
+      } else {
+        await fetchModule.fetch("http://httpbin:8080/status/200", {
+          headers: {
+            "user-agent": `node@${process.version}`,
+          },
+        });
+      }
+    } finally {
       res.writeHead(200).end();
-      return;
     }
-
-    fetchModule
-      .fetch("http://httpbin:8080/status/200", {
-        headers: {
-          "user-agent": `node@${process.version}`,
-        },
-      })
-      .finally(() => {
-        res.writeHead(200).end();
-      });
   })
   .listen(3000, (err) => {
     if (err) {
