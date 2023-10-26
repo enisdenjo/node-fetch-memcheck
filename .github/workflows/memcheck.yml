@@ -1,9 +1,7 @@
-name: CI
+name: memcheck
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 jobs:
   memcheck:
@@ -15,7 +13,7 @@ jobs:
           - native
           - undici
           - whatwg-node
-    name: memcheck ${{ matrix.check }}
+    name: ${{ matrix.check }}
     env:
       PORT: 3000
     steps:
