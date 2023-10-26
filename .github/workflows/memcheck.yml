@@ -37,7 +37,7 @@ jobs:
           docker compose up httpbin ${{ matrix.check }} -d
       - name: Runs
         run: |
-          for i in 1 2 3 4 5
+          for i in {1..${{ inputs.runs }}}
           do
             # load test
             ./k6 run k6.js --vus=5 --duration=30s
