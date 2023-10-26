@@ -28,7 +28,7 @@
 
      1. Force GC
         ```sh
-        curl http://localhost:$PORT/gc
+        k6 run k6.js --vus 5 --duration 30s && curl http://localhost:$PORT/gc
         ```
 
    - undici
@@ -47,7 +47,7 @@
 
      1. Force GC
         ```sh
-        curl http://localhost:$PORT/gc
+        k6 run k6.js --vus 5 --duration 30s && curl http://localhost:$PORT/gc
         ```
 
    - @whatwg-node/fetch
@@ -58,13 +58,8 @@
         export PORT=3002
         ```
 
-     1. Load test
+     1. Load test and force GC
 
         ```sh
-        k6 run k6.js --vus 5 --duration 30s
-        ```
-
-     1. Force GC
-        ```sh
-        curl http://localhost:$PORT/gc
+        k6 run k6.js --vus 5 --duration 30s && curl http://localhost:$PORT/gc
         ```
