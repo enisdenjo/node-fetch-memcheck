@@ -33,7 +33,7 @@ jobs:
           docker compose up httpbin ${{ matrix.check }} -d
       - name: Run
         run: |
-          for i in 1 2
+          for i in 1 2 3 4 5
           do
             # load test
             ./k6 run k6.js --vus=5 --duration=30s
@@ -45,6 +45,6 @@ jobs:
             sleep 3
 
             # write summary
-            echo "### $i. Run Stats\n" >> $GITHUB_STEP_SUMMARY
+            echo "### $i. Run Stats" >> $GITHUB_STEP_SUMMARY
             docker stats --format json --no-stream | grep ${{ matrix.check }} | jq -r '"- MemPerc: "+.MemPerc,"- MemUsage: "+.MemUsage' >> $GITHUB_STEP_SUMMARY
           done
