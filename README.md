@@ -20,13 +20,7 @@
         export PORT=3000
         ```
 
-     1. Load test
-
-        ```sh
-        k6 run k6.js --vus 5 --duration 30s
-        ```
-
-     1. Force GC
+     1. Load test and force GC
         ```sh
         k6 run k6.js --vus 5 --duration 30s && curl http://localhost:$PORT/gc
         ```
@@ -39,13 +33,7 @@
         export PORT=3001
         ```
 
-     1. Load test
-
-        ```sh
-        k6 run k6.js --vus 5 --duration 30s
-        ```
-
-     1. Force GC
+     1. Load test and force GC
         ```sh
         k6 run k6.js --vus 5 --duration 30s && curl http://localhost:$PORT/gc
         ```
@@ -63,3 +51,6 @@
         ```sh
         k6 run k6.js --vus 5 --duration 30s && curl http://localhost:$PORT/gc
         ```
+
+1. Record mem usage
+1. Repeat "Test" phase
