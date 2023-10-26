@@ -1,13 +1,9 @@
 {
   "name": "node-fetch",
   "type": "module",
-  "scripts": {
-    "start:native": "node index.js",
-    "start:undici": "node index-undici.js",
-    "debug:native": "node --inspect-brk index.js",
-    "debug:undici": "node --inspect-brk index-undici.js"
-  },
+  "main": "index.js",
   "dependencies": {
-    "undici": "5.22.1"
+    "@whatwg-node/fetch": "^0.9.14",
+    "undici": "^5.27.0"
   }
 }
