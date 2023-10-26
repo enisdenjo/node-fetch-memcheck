@@ -10,11 +10,61 @@
    ```sh
    docker stats
    ```
-1. Load test
-   ```sh
-   PORT=3000 k6 run k6.js --vus 5 --duration 30s
-   ```
-1. Force GC
-   ```sh
-   curl http://localhost:3000/gc
-   ```
+1. Test
+
+   - native
+
+     1. Set port
+
+        ```sh
+        export PORT=3000
+        ```
+
+     1. Load test
+
+        ```sh
+        k6 run k6.js --vus 5 --duration 30s
+        ```
+
+     1. Force GC
+        ```sh
+        curl http://localhost:$PORT/gc
+        ```
+
+   - undici
+
+     1. Set port
+
+        ```sh
+        export PORT=3001
+        ```
+
+     1. Load test
+
+        ```sh
+        k6 run k6.js --vus 5 --duration 30s
+        ```
+
+     1. Force GC
+        ```sh
+        curl http://localhost:$PORT/gc
+        ```
+
+   - @whatwg-node/fetch
+
+     1. Set port
+
+        ```sh
+        export PORT=3002
+        ```
+
+     1. Load test
+
+        ```sh
+        k6 run k6.js --vus 5 --duration 30s
+        ```
+
+     1. Force GC
+        ```sh
+        curl http://localhost:$PORT/gc
+        ```
