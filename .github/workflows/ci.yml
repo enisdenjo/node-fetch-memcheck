@@ -6,9 +6,18 @@ on:
       - main
 
 jobs:
-  test:
+  memcheck:
     runs-on: ubuntu-latest
-    name: Test
+    strategy:
+      fail-fast: false
+      matrix:
+        check:
+          - native
+          - undici
+          - whatwg-node
+    name: memcheck ${{ matrix.check }}
+    env:
+      PORT: 3000
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -21,12 +30,31 @@ jobs:
           curl https://github.com/grafana/k6/releases/download/v0.47.0/k6-v0.47.0-linux-amd64.tar.gz -L | tar xvz --strip-components 1
       - name: Up
         run: |
-          docker compose up httpbin native -d
-      - name: Load
-        env:
-          PORT: 3000
+          docker compose up httpbin ${{ matrix.check }} -d
+      - name: Load 1
+        run: ./k6 run k6.js --vus=5 --duration=30s
+      - name: GC
         run: |
-          ./k6 run k6.js --vus=5 --duration=30s
+          curl http://localhost:$PORT/gc
+          curl http://localhost:$PORT/gc
+          curl http://localhost:$PORT/gc
+      - name: Stats
+        run: docker stats --format json --no-stream
+      - name: Load 2
+        run: ./k6 run k6.js --vus=5 --duration=30s
+      - name: GC
+        run: |
+          curl http://localhost:$PORT/gc
+          curl http://localhost:$PORT/gc
+          curl http://localhost:$PORT/gc
+      - name: Stats
+        run: docker stats --format json --no-stream
+      - name: Load 3
+        run: ./k6 run k6.js --vus=5 --duration=30s
+      - name: GC
+        run: |
+          curl http://localhost:$PORT/gc
+          curl http://localhost:$PORT/gc
           curl http://localhost:$PORT/gc
       - name: Stats
         run: docker stats --format json --no-stream
