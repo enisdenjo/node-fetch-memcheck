@@ -2,6 +2,12 @@ name: memcheck
 
 on:
   workflow_dispatch:
+    inputs:
+      runs:
+        description: Number of load test runs to perform.
+        type: number
+        required: true
+        default: 3
 
 jobs:
   memcheck:
@@ -29,7 +35,7 @@ jobs:
       - name: Up
         run: |
           docker compose up httpbin ${{ matrix.check }} -d
-      - name: Run
+      - name: Runs
         run: |
           for i in 1 2 3 4 5
           do
