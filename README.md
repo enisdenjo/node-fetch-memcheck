@@ -1,5 +1,3 @@
-# Native fetch leaks memory on Node v19+
-
 1. [Install Docker](https://docs.docker.com/engine/install)
 1. [Install K6](https://k6.io/docs/get-started/installation)
 1. Memcheck
