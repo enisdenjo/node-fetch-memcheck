@@ -1,0 +1,34 @@
+networks:
+  local:
+    driver: "bridge"
+
+services:
+  httpbin:
+    image: mccutchen/go-httpbin
+    networks:
+      - local
+
+  native:
+    build: .
+    environment:
+      FETCH_MODULE_NAME: native
+    networks:
+      - local
+    ports:
+      - 3000:3000
+  undici:
+    build: .
+    environment:
+      FETCH_MODULE_NAME: undici
+    networks:
+      - local
+    ports:
+      - 3001:3000
+  whatwg-node:
+    build: .
+    environment:
+      FETCH_MODULE_NAME: "@whatwg-node/fetch"
+    networks:
+      - local
+    ports:
+      - 3002:3000
