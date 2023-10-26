@@ -14,3 +14,7 @@
    ```sh
    k6 run k6.js --vus 5 --duration 30s
    ```
+1. Force GC
+   ```sh
+   curl http://localhost:3000/gc
+   ```
