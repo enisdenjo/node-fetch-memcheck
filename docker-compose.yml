@@ -15,7 +15,7 @@ services:
     networks:
       - local
     ports:
-      - 3000:3000
+      - $PORT:3000
   undici:
     build: .
     environment:
@@ -23,7 +23,7 @@ services:
     networks:
       - local
     ports:
-      - 3000:3000
+      - $PORT:3000
   whatwg-node:
     build: .
     environment:
@@ -31,4 +31,4 @@ services:
     networks:
       - local
     ports:
-      - 3000:3000
+      - $PORT:3000
