@@ -12,7 +12,7 @@
    ```
 1. Load test
    ```sh
-   k6 run k6.js --vus 5 --duration 30s
+   PORT=3000 k6 run k6.js --vus 5 --duration 30s
    ```
 1. Force GC
    ```sh
