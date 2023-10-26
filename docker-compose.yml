@@ -23,7 +23,7 @@ services:
     networks:
       - local
     ports:
-      - 3001:3000
+      - 3000:3000
   whatwg-node:
     build: .
     environment:
@@ -31,4 +31,4 @@ services:
     networks:
       - local
     ports:
-      - 3002:3000
+      - 3000:3000
