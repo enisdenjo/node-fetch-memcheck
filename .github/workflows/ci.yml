@@ -31,30 +31,39 @@ jobs:
       - name: Up
         run: |
           docker compose up httpbin ${{ matrix.check }} -d
-      - name: Load 1
-        run: ./k6 run k6.js --vus=5 --duration=30s
-      - name: GC
+      - name: Run 1
         run: |
+          # load test
+          ./k6 run k6.js --vus=5 --duration=30s
+          # collect garbage
           curl http://localhost:$PORT/gc
           curl http://localhost:$PORT/gc
           curl http://localhost:$PORT/gc
-      - name: Stats
-        run: docker stats --format json --no-stream
-      - name: Load 2
-        run: ./k6 run k6.js --vus=5 --duration=30s
-      - name: GC
+          # write summary
+          echo "### 1. Run stats\n" >> $GITHUB_STEP_SUMMARY
+          docker stats --format json --no-stream | grep ${{ matrix.check }} | jq -r '"MemPerc: "+.MemPerc,"MemUsage: "+.MemUsage' >> $GITHUB_STEP_SUMMARY
+          echo "\n" >> $GITHUB_STEP_SUMMARY
+      - name: Run 2
         run: |
+          # load test
+          ./k6 run k6.js --vus=5 --duration=30s
+          # collect garbage
           curl http://localhost:$PORT/gc
           curl http://localhost:$PORT/gc
           curl http://localhost:$PORT/gc
-      - name: Stats
-        run: docker stats --format json --no-stream
-      - name: Load 3
-        run: ./k6 run k6.js --vus=5 --duration=30s
-      - name: GC
+          # write summary
+          echo "### 2. Run stats\n" >> $GITHUB_STEP_SUMMARY
+          docker stats --format json --no-stream | grep ${{ matrix.check }} | jq -r '"MemPerc: "+.MemPerc,"MemUsage: "+.MemUsage' >> $GITHUB_STEP_SUMMARY
+          echo "\n" >> $GITHUB_STEP_SUMMARY
+      - name: Run 3
         run: |
+          # load test
+          ./k6 run k6.js --vus=5 --duration=30s
+          # collect garbage
           curl http://localhost:$PORT/gc
           curl http://localhost:$PORT/gc
           curl http://localhost:$PORT/gc
-      - name: Stats
-        run: docker stats --format json --no-stream
+          # write summary
+          echo "### 3. Run stats\n" >> $GITHUB_STEP_SUMMARY
+          docker stats --format json --no-stream | grep ${{ matrix.check }} | jq -r '"MemPerc: "+.MemPerc,"MemUsage: "+.MemUsage' >> $GITHUB_STEP_SUMMARY
+          echo "\n" >> $GITHUB_STEP_SUMMARY
