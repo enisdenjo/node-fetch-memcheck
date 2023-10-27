@@ -85,3 +85,31 @@
         ```
 
      1. _Repeat load test and check resources_
+
+   - node-fetch
+
+     1. Set port
+
+        ```sh
+        export PORT=3003
+        ```
+
+     1. Start containers
+
+        ```sh
+        docker compose up httpbin node-fetch -d --build
+        ```
+
+     1. Load test and force GC
+
+        ```sh
+        k6 run k6.js --vus 5 --duration 30s && curl http://localhost:$PORT/gc
+        ```
+
+     1. Check resources
+
+        ```sh
+        docker stats
+        ```
+
+     1. _Repeat load test and check resources_

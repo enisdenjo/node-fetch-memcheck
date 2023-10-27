@@ -3,13 +3,15 @@ import http from "node:http";
 const fetchModuleName = process.env.FETCH_MODULE_NAME;
 
 /** @type {{ fetch: typeof fetch }} */
-const fetchModule = await (() => {
+const fetchModule = await (async () => {
   switch (fetchModuleName) {
     case "native":
       return globalThis;
     case "undici":
     case "@whatwg-node/fetch":
       return import(fetchModuleName);
+    case "node-fetch":
+      return { fetch: (await import(fetchModuleName)).default };
     default:
       throw new Error(`unrecognized fetch module "${fetchModuleName}"`);
   }

@@ -4,6 +4,7 @@
   "main": "index.js",
   "dependencies": {
     "@whatwg-node/fetch": "^0.9.14",
+    "node-fetch": "^3.3.2",
     "undici": "^5.27.0"
   }
 }

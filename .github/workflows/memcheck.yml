@@ -19,6 +19,7 @@ jobs:
           - native
           - undici
           - whatwg-node
+          - node-fetch
     name: ${{ matrix.check }}
     env:
       PORT: 3000

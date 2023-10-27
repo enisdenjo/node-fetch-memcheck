@@ -32,3 +32,11 @@ services:
       - local
     ports:
       - $PORT:3000
+  node-fetch:
+    build: .
+    environment:
+      FETCH_MODULE_NAME: node-fetch
+    networks:
+      - local
+    ports:
+      - $PORT:3000
