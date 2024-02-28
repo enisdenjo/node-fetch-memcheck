@@ -1,115 +1,33 @@
 1. [Install Docker](https://docs.docker.com/engine/install)
 1. [Install K6](https://k6.io/docs/get-started/installation)
-1. Memcheck
+1. Choose a service (`<service>`):
 
    - native
-
-     1. Set port
-
-        ```sh
-        export PORT=3000
-        ```
-
-     1. Start containers
-
-        ```sh
-        docker compose up httpbin native -d --build
-        ```
-
-     1. Load test and force GC
-
-        ```sh
-        k6 run k6.js --vus 5 --duration 30s && curl http://localhost:$PORT/gc
-        ```
-
-     1. Check resources
-
-        ```sh
-        docker stats
-        ```
-
-     1. _Repeat load test and check resources_
-
    - undici
-
-     1. Set port
-
-        ```sh
-        export PORT=3001
-        ```
-
-     1. Start containers
-
-        ```sh
-        docker compose up httpbin undici -d --build
-        ```
-
-     1. Load test and force GC
-
-        ```sh
-        k6 run k6.js --vus 5 --duration 30s && curl http://localhost:$PORT/gc
-        ```
-
-     1. Check resources
-
-        ```sh
-        docker stats
-        ```
-
-     1. _Repeat load test and check resources_
-
-   - @whatwg-node/fetch
-
-     1. Set port
-
-        ```sh
-        export PORT=3002
-        ```
-
-     1. Start containers
-
-        ```sh
-        docker compose up httpbin whatwg-node -d --build
-        ```
-
-     1. Load test and force GC
-
-        ```sh
-        k6 run k6.js --vus 5 --duration 30s && curl http://localhost:$PORT/gc
-        ```
-
-     1. Check resources
-
-        ```sh
-        docker stats
-        ```
-
-     1. _Repeat load test and check resources_
-
+   - whatwg-node
    - node-fetch
 
-     1. Set port
+1. Set port
 
-        ```sh
-        export PORT=3003
-        ```
+   ```sh
+   export PORT=3000
+   ```
 
-     1. Start containers
+   - (optional) Consume the response body
 
-        ```sh
-        docker compose up httpbin node-fetch -d --build
-        ```
+     ```sh
+     export CONSUME_BODY=true
+     ```
 
-     1. Load test and force GC
+1. Start containers
 
-        ```sh
-        k6 run k6.js --vus 5 --duration 30s && curl http://localhost:$PORT/gc
-        ```
+   ```sh
+   docker compose up httpbin <service> -d --build
+   ```
 
-     1. Check resources
+1. Run memcheck
 
-        ```sh
-        docker stats
-        ```
-
-     1. _Repeat load test and check resources_
+   ```sh
+   # ./memcheck.sh <service> <VUs> <duration>
+   ./memcheck.sh <service> 100 30s
+   ```
