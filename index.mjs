@@ -2,6 +2,7 @@ import http from "node:http";
 import wtfnode from "wtfnode";
 
 const fetchModuleName = process.env.FETCH_MODULE_NAME;
+const consumeBody = ["1", "t", "true"].includes(process.env.CONSUME_BODY);
 
 /** @type {{ fetch: typeof fetch }} */
 const fetchModule = await (async () => {
@@ -51,11 +52,16 @@ http
 
         body = [info, warn, err].join("\n");
       } else {
-        await fetchModule.fetch("https://httpbin:8080/status/200", {
+        const res = await fetchModule.fetch("https://httpbin:8080/anything", {
+          method: "POST",
+          body: '{ "hello": "world" }',
           headers: {
             "user-agent": `node@${process.version}`,
           },
         });
+        if (consumeBody) {
+          await res.json();
+        }
       }
     } finally {
       res.writeHead(200).end(body);

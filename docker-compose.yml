@@ -17,6 +17,7 @@ services:
     build: .
     environment:
       FETCH_MODULE_NAME: native
+      CONSUME_BODY: $CONSUME_BODY
     networks:
       - local
     ports:
@@ -25,6 +26,7 @@ services:
     build: .
     environment:
       FETCH_MODULE_NAME: undici
+      CONSUME_BODY: $CONSUME_BODY
     networks:
       - local
     ports:
@@ -33,6 +35,7 @@ services:
     build: .
     environment:
       FETCH_MODULE_NAME: "@whatwg-node/fetch"
+      CONSUME_BODY: $CONSUME_BODY
     networks:
       - local
     ports:
@@ -41,6 +44,7 @@ services:
     build: .
     environment:
       FETCH_MODULE_NAME: node-fetch
+      CONSUME_BODY: $CONSUME_BODY
     networks:
       - local
     ports:
