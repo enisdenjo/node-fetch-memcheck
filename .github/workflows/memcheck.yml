@@ -50,7 +50,9 @@ jobs:
         run: |
           docker compose up httpbin ${{ matrix.check }} -d
       - name: Run
-        run: ./memcheck.sh ${{ matrix.check }} ${{ inputs.vus }} ${{ inputs.duration }} >> $GITHUB_STEP_SUMMARY
+        run: |
+          ./memcheck.sh ${{ matrix.check }} ${{ inputs.vus }} ${{ inputs.duration }} | tee memcheck.out
+          cat memcheck.out >> $GITHUB_STEP_SUMMARY
       - name: k6 output
         if: always()
         run: cat k6.out
