@@ -8,6 +8,16 @@ on:
         type: number
         required: true
         default: 3
+      duration:
+        description: Duration of a single run.
+        type: number
+        required: true
+        default: 30s
+      consume_body:
+        description: Whether to consume the response body.
+        type: boolean
+        required: true
+        default: false
 
 jobs:
   memcheck:
@@ -34,6 +44,8 @@ jobs:
         run: |
           curl https://github.com/grafana/k6/releases/download/v0.47.0/k6-v0.47.0-linux-amd64.tar.gz -L | tar xvz --strip-components 1
       - name: Up
+        env:
+          CONSUME_BODY: ${{ inputs.consume_body }}
         run: |
           docker compose up httpbin ${{ matrix.check }} -d
       - name: Runs
@@ -41,7 +53,7 @@ jobs:
           for i in {1..${{ inputs.runs }}}
           do
             # load test
-            ./k6 run k6.js --vus=5 --duration=30s
+            ./k6 run k6.js --vus=100 --duration=${{ inputs.duration }}
 
             # collect garbage
             curl http://localhost:$PORT/gc
