@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-set -e
 
 service=$1
 if [ -z "$service" ]
@@ -42,15 +41,16 @@ ${K6_PATH:="./k6"} run k6.js --vus=100 --duration="$duration" &> k6.out &
 
 while true
 do
+  time=$(date +%T)
+
   if jobs % &> /dev/null;
   then
     memusage=$(docker stats --format json --no-stream | grep "node-fetch-memcheck-$service" | jq -r '.MemUsage')
     active_handles=$(curl -s "http://localhost:$PORT/active_handles")
-    time=$(date +%T)
 
     if [ -z "$memusage" ]
     then
-      echo "$service crashed"
+      echo "$service crashed at $time"
       exit 1
     fi
 
@@ -60,6 +60,7 @@ do
     continue
   fi
 
+  echo "done at $time"
   exit 0
 done
 
