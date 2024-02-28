@@ -1,4 +1,5 @@
 import http from "node:http";
+import wtfnode from "wtfnode";
 
 const fetchModuleName = process.env.FETCH_MODULE_NAME;
 
@@ -21,12 +22,34 @@ console.log(`Node ${process.version} with ${fetchModuleName}`);
 
 http
   .createServer(async (req, res) => {
+    let body = "";
     try {
       if (req.url.endsWith("gc")) {
         for (let i = 0; i < 10; i++) {
           global.gc();
           await new Promise((resolve) => process.nextTick(resolve));
         }
+      } else if (req.url.endsWith("wtfnode")) {
+        let info = "";
+        let warn = "";
+        let err = "";
+
+        wtfnode.setLogger("info", (msg, ...params) => {
+          info += msg + "" + params.map(String).join(", ");
+          info += "\n";
+        });
+        wtfnode.setLogger("warn", (msg, ...params) => {
+          warn += msg + "" + params.map(String).join(", ");
+          warn += "\n";
+        });
+        wtfnode.setLogger("error", (msg, ...params) => {
+          err += msg + "" + params.map(String).join(", ");
+          err += "\n";
+        });
+        wtfnode.dump();
+        wtfnode.resetLoggers();
+
+        body = [info, warn, err].join("\n");
       } else {
         await fetchModule.fetch("https://httpbin:8080/status/200", {
           headers: {
@@ -35,7 +58,7 @@ http
         });
       }
     } finally {
-      res.writeHead(200).end();
+      res.writeHead(200).end(body);
     }
   })
   .listen(3000, (err) => {
