@@ -7,10 +7,10 @@ COPY package.json .
 COPY package-lock.json .
 RUN npm i
 
-COPY index.js .
+COPY index.mjs .
 
 # allow self-signed certificates
 ENV NODE_TLS_REJECT_UNAUTHORIZED=0
 
 USER node
-CMD ["dumb-init", "node", "--expose-gc", "."]
+CMD ["dumb-init", "node", "--expose-gc", "index.mjs"]
