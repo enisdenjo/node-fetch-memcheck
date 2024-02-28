@@ -19,7 +19,11 @@ const fetchModule = await (async () => {
   }
 })();
 
-console.log(`Node ${process.version} with ${fetchModuleName}`);
+console.log(
+  `Node ${process.version} with ${fetchModuleName},${
+    consumeBody ? " " : " NOT "
+  }consuming body`
+);
 
 http
   .createServer(async (req, res) => {
@@ -72,5 +76,5 @@ http
       console.error(err);
       process.exit(1);
     }
-    console.log("Server is running...");
+    console.log("Server is running on http://localhost:3000...");
   });
