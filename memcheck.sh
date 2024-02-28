@@ -48,6 +48,12 @@ do
     active_handles=$(curl -s "http://localhost:$PORT/active_handles")
     time=$(date +%T)
 
+    if [ -z "$memusage" ]
+    then
+      echo "$service crashed"
+      exit 1
+    fi
+
     echo "1. $time memory usage: $memusage, active handles: $active_handles"
 
     sleep 1
