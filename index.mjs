@@ -60,7 +60,7 @@ http
           method: "POST",
           body: '{ "hello": "world" }',
           headers: {
-            "user-agent": `node@${process.version}`,
+            "user-agent": `node@${process.version}+${fetchModuleName}`,
           },
         });
         if (consumeBody) {
