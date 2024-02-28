@@ -48,8 +48,9 @@ do
     memusage=$(docker stats --format json --no-stream | grep "node-fetch-memcheck-$service" | jq -r '.MemUsage')
     active_handles=$(curl -s "http://localhost:$PORT/active_handles")
 
-    if [ -z "$memusage" ]
+    if [ -z "$active_handles" ]
     then
+      echo ""
       echo "$service crashed at $time"
       exit 1
     fi
@@ -60,6 +61,7 @@ do
     continue
   fi
 
+  echo ""
   echo "done at $time"
   exit 0
 done
