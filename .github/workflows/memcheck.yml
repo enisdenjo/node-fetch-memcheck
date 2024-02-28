@@ -52,4 +52,4 @@ jobs:
       - name: Run
         run: ./memcheck.sh ${{ matrix.check }} ${{ inputs.vus }} ${{ inputs.duration }} >> $GITHUB_STEP_SUMMARY
       - name: k6 output
-        run: echo k6.out
+        run: cat k6.out
