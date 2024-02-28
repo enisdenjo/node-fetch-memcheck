@@ -53,6 +53,9 @@ jobs:
         run: |
           ./memcheck.sh ${{ matrix.check }} ${{ inputs.vus }} ${{ inputs.duration }} | tee memcheck.out
           cat memcheck.out >> $GITHUB_STEP_SUMMARY
-      - name: k6 output
+      - name: Upload k6 output
+        uses: actions/upload-artifact@v4
         if: always()
-        run: cat k6.out
+        with:
+          name: ${{ matrix.check }}-k6-output
+          path: k6.out
