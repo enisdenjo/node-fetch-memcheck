@@ -28,7 +28,7 @@ http
           await new Promise((resolve) => process.nextTick(resolve));
         }
       } else {
-        await fetchModule.fetch("http://httpbin:8080/status/200", {
+        await fetchModule.fetch("https://httpbin:8080/status/200", {
           headers: {
             "user-agent": `node@${process.version}`,
           },

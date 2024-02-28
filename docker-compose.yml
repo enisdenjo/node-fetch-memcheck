@@ -5,6 +5,11 @@ networks:
 services:
   httpbin:
     image: mccutchen/go-httpbin
+    environment:
+      - HTTPS_CERT_FILE=/cert/server.crt
+      - HTTPS_KEY_FILE=/cert/server.key
+    volumes:
+      - ./cert:/cert
     networks:
       - local
 
