@@ -14,7 +14,7 @@ on:
         required: true
         default: 30s
       consume_body:
-        description: Whether to consume the response body.
+        description: Consume the response body?
         type: boolean
         required: true
         default: false
