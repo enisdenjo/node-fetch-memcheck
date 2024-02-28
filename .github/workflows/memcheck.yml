@@ -3,13 +3,13 @@ name: memcheck
 on:
   workflow_dispatch:
     inputs:
-      runs:
-        description: Number of load test runs to perform.
+      vus:
+        description: Constant virual users (VUs).
         type: number
         required: true
-        default: 3
+        default: 100
       duration:
-        description: Duration of a single run.
+        description: Duration of the run.
         type: number
         required: true
         default: 30s
@@ -18,6 +18,9 @@ on:
         type: boolean
         required: true
         default: false
+
+env:
+  CONSUME_BODY: ${{ inputs.consume_body }}
 
 jobs:
   memcheck:
@@ -44,24 +47,9 @@ jobs:
         run: |
           curl https://github.com/grafana/k6/releases/download/v0.47.0/k6-v0.47.0-linux-amd64.tar.gz -L | tar xvz --strip-components 1
       - name: Up
-        env:
-          CONSUME_BODY: ${{ inputs.consume_body }}
         run: |
           docker compose up httpbin ${{ matrix.check }} -d
-      - name: Runs
-        run: |
-          for i in {1..${{ inputs.runs }}}
-          do
-            # load test
-            ./k6 run k6.js --vus=100 --duration=${{ inputs.duration }}
-
-            # collect garbage
-            curl http://localhost:$PORT/gc
-            curl http://localhost:$PORT/gc
-            curl http://localhost:$PORT/gc
-            sleep 3
-
-            # write summary
-            echo "### $i. Run Stats" >> $GITHUB_STEP_SUMMARY
-            docker stats --format json --no-stream | grep ${{ matrix.check }} | jq -r '"- MemPerc: "+.MemPerc,"- MemUsage: "+.MemUsage' >> $GITHUB_STEP_SUMMARY
-          done
+      - name: Run
+        run: ./memcheck.sh ${{ matrix.check }} ${{ inputs.vus }} ${{ inputs.duration }} >> $GITHUB_STEP_SUMMARY
+      - name: k6 output
+        run: echo k6.out

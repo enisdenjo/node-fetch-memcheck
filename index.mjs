@@ -34,6 +34,8 @@ http
           global.gc();
           await new Promise((resolve) => process.nextTick(resolve));
         }
+      } else if (req.url.endsWith("active_handles")) {
+        body = String(process._getActiveHandles().length);
       } else if (req.url.endsWith("wtfnode")) {
         let info = "";
         let warn = "";
@@ -76,5 +78,5 @@ http
       console.error(err);
       process.exit(1);
     }
-    console.log("Server is running on http://localhost:3000...");
+    console.log("Server is running on http://localhost:3000");
   });
