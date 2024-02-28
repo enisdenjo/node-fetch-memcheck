@@ -1,4 +1,4 @@
-FROM node:20-slim
+FROM node:21-slim
 
 RUN apt update
 RUN apt install -y dumb-init
